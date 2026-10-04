@@ -6,7 +6,6 @@ import com.lms.model.Transaction;
 import com.lms.service.BookService;
 import com.lms.service.MemberService;
 import com.lms.service.TransactionService;
-import com.lms.util.ViewSwitcher;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -34,7 +33,6 @@ public class ReportController {
         setupBookColumns();
         List<Book> data = bookService.getAllBooks();
         reportTable.setItems(FXCollections.observableArrayList(data));
-        ViewSwitcher.setStatus("Report: All Books (" + data.size() + " records)");
     }
 
     @FXML
@@ -44,7 +42,6 @@ public class ReportController {
                 .filter(b -> b.getAvailableCopies() > 0)
                 .collect(Collectors.toList());
         reportTable.setItems(FXCollections.observableArrayList(available));
-        ViewSwitcher.setStatus("Report: Available Books (" + available.size() + " records)");
     }
 
     @FXML
@@ -52,7 +49,6 @@ public class ReportController {
         setupTransactionColumns();
         List<Transaction> active = transactionService.getActiveTransactions();
         reportTable.setItems(FXCollections.observableArrayList(active));
-        ViewSwitcher.setStatus("Report: Issued Books (" + active.size() + " records)");
     }
 
     @FXML
@@ -60,7 +56,6 @@ public class ReportController {
         setupTransactionColumns();
         List<Transaction> overdue = transactionService.getOverdueTransactions();
         reportTable.setItems(FXCollections.observableArrayList(overdue));
-        ViewSwitcher.setStatus("Report: Overdue Books (" + overdue.size() + " records)");
     }
 
     @FXML
@@ -68,7 +63,6 @@ public class ReportController {
         setupMemberColumns();
         List<Member> members = memberService.getAllMembers();
         reportTable.setItems(FXCollections.observableArrayList(members));
-        ViewSwitcher.setStatus("Report: All Members (" + members.size() + " records)");
     }
 
     @FXML
@@ -76,7 +70,6 @@ public class ReportController {
         setupTransactionColumns();
         List<Transaction> history = transactionService.getAllTransactions();
         reportTable.setItems(FXCollections.observableArrayList(history));
-        ViewSwitcher.setStatus("Report: Borrowing History (" + history.size() + " records)");
     }
 
     private void setupBookColumns() {

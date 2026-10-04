@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<SplitPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.lms.controller.TransactionController" orientation="HORIZONTAL" dividerPositions="0.5">
+    
+    <!-- Left: Issue Book -->
+    <VBox spacing="15" style="-fx-padding: 20;">
+        <Label text="Issue Book" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        
+        <GridPane hgap="10" vgap="15">
+            <Label text="Member:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <ComboBox fx:id="memberComboBox" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            
+            <Label text="Book:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <ComboBox fx:id="bookComboBox" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            
+            <Label text="Issue Date:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <DatePicker fx:id="issueDatePicker" prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            
+            <Label text="Due Date:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <DatePicker fx:id="dueDatePicker" prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        </GridPane>
+        
+        <Button text="Issue Book" onAction="#handleIssueBook" styleClass="button" defaultButton="true" prefWidth="150" />
+    </VBox>
+    
+    <!-- Right: Return Book -->
+    <VBox spacing="15" style="-fx-padding: 20; -fx-background-color: #E8E8E8;">
+        <Label text="Return Book" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Transaction ID:" />
+            <TextField fx:id="transactionIdField" prefWidth="100" />
+            <Button text="Search" onAction="#handleSearchTransaction" styleClass="button"/>
+        </HBox>
+        
+        <VBox style="-fx-background-color: white; -fx-border-color: #A0A0A0; -fx-padding: 10;" prefHeight="150">
+            <Label fx:id="returnInfoLabel" text="Enter an ID and search..." wrapText="true" />
+        </VBox>
+        
+        <Button text="Return Book" onAction="#handleReturnBook" styleClass="button" prefWidth="150" />
+    </VBox>
+    
+</SplitPane>

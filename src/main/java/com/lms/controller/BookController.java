@@ -2,32 +2,57 @@ package com.lms.controller;
 
 import com.lms.model.Book;
 import com.lms.service.BookService;
+import com.lms.service.LibraryException;
 import com.lms.util.AlertHelper;
-import com.lms.util.ViewSwitcher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 
 public class BookController {
 
     @FXML private TableView<Book> bookTable;
     @FXML private TextField searchField;
 
+    // Inline Form Fields
+    @FXML private TextField titleField;
+    @FXML private TextField authorField;
+    @FXML private TextField categoryField;
+    @FXML private TextField isbnField;
+    @FXML private TextField totalCopiesField;
+
     private final BookService bookService = new BookService();
     private ObservableList<Book> bookList = FXCollections.observableArrayList();
+    private Book editingBook = null;
 
     @FXML
     public void initialize() {
         setupTable();
-        setupInteractions();
+        
+        bookTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                populateForm(newSelection);
+            } else {
+                clearForm();
+            }
+        });
+
+        bookTable.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE) {
+                handleDelete();
+            }
+        });
+
+        searchField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                handleSearch();
+            }
+        });
+
         handleRefresh();
     }
 
@@ -43,36 +68,24 @@ public class BookController {
         cols[6].setCellValueFactory(new PropertyValueFactory<>("availableCopies"));
     }
 
-    private void setupInteractions() {
-        // Context Menu
-        ContextMenu contextMenu = new ContextMenu();
-        MenuItem editItem = new MenuItem("Edit Book");
-        editItem.setOnAction(e -> handleEdit());
-        MenuItem deleteItem = new MenuItem("Delete Book");
-        deleteItem.setOnAction(e -> handleDelete());
-        contextMenu.getItems().addAll(editItem, deleteItem);
-        bookTable.setContextMenu(contextMenu);
+    private void populateForm(Book book) {
+        editingBook = book;
+        titleField.setText(book.getTitle());
+        authorField.setText(book.getAuthor());
+        categoryField.setText(book.getCategory());
+        isbnField.setText(book.getIsbn());
+        totalCopiesField.setText(String.valueOf(book.getTotalCopies()));
+    }
 
-        // Double-click to Edit
-        bookTable.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                handleEdit();
-            }
-        });
-
-        // Delete key
-        bookTable.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE) {
-                handleDelete();
-            }
-        });
-
-        // Search on enter
-        searchField.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                handleSearch();
-            }
-        });
+    @FXML
+    public void clearForm() {
+        editingBook = null;
+        titleField.clear();
+        authorField.clear();
+        categoryField.clear();
+        isbnField.clear();
+        totalCopiesField.clear();
+        bookTable.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -80,7 +93,6 @@ public class BookController {
         String keyword = searchField.getText();
         bookList.setAll(bookService.searchBooks(keyword));
         bookTable.setItems(bookList);
-        ViewSwitcher.setStatus("Showing " + bookList.size() + " books");
     }
 
     @FXML
@@ -88,42 +100,52 @@ public class BookController {
         searchField.clear();
         bookList.setAll(bookService.getAllBooks());
         bookTable.setItems(bookList);
-        ViewSwitcher.setStatus("Showing " + bookList.size() + " books");
+        clearForm();
     }
 
     @FXML
-    public void handleAdd() {
-        ViewSwitcher.openDialog("/fxml/dialog_book.fxml", "Add Book");
-        handleRefresh(); // Refresh table when dialog closes
-    }
+    public void handleSave() {
+        try {
+            int totalCopies = Integer.parseInt(totalCopiesField.getText());
 
-    @FXML
-    public void handleEdit() {
-        Book selected = bookTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            AlertHelper.showError("Selection Required", "Please select a book to edit.");
-            return;
+            if (editingBook == null) {
+                // Add Mode
+                Book book = new Book(0, titleField.getText(), authorField.getText(), 
+                                     categoryField.getText(), isbnField.getText(), 
+                                     totalCopies, totalCopies);
+                bookService.addBook(book);
+            } else {
+                // Edit Mode
+                int copyDiff = totalCopies - editingBook.getTotalCopies();
+                int newAvailable = editingBook.getAvailableCopies() + copyDiff;
+                
+                editingBook.setTitle(titleField.getText());
+                editingBook.setAuthor(authorField.getText());
+                editingBook.setCategory(categoryField.getText());
+                editingBook.setIsbn(isbnField.getText());
+                editingBook.setTotalCopies(totalCopies);
+                editingBook.setAvailableCopies(newAvailable);
+                
+                bookService.updateBook(editingBook);
+            }
+            handleRefresh();
+        } catch (NumberFormatException e) {
+            AlertHelper.showError("Validation Error", "Total copies must be a valid number.");
+        } catch (LibraryException e) {
+            AlertHelper.showError("Validation Error", e.getMessage());
         }
-        
-        ViewSwitcher.openDialog("/fxml/dialog_book.fxml", "Edit Book", (BookDialogController controller) -> {
-            controller.setEditMode(selected);
-        });
-        
-        handleRefresh();
     }
 
     @FXML
     public void handleDelete() {
-        Book selected = bookTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
+        if (editingBook == null) {
             AlertHelper.showError("Selection Required", "Please select a book to delete.");
             return;
         }
 
-        if (AlertHelper.showConfirmation("Delete Book", "Are you sure you want to delete '" + selected.getTitle() + "'?")) {
+        if (AlertHelper.showConfirmation("Delete Book", "Are you sure you want to delete '" + editingBook.getTitle() + "'?")) {
             try {
-                bookService.deleteBook(selected.getBookId());
-                ViewSwitcher.setStatus("Book deleted successfully");
+                bookService.deleteBook(editingBook.getBookId());
                 handleRefresh();
             } catch (Exception e) {
                 AlertHelper.showError("Error", "Could not delete book. It may be linked to active transactions.");

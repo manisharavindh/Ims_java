@@ -3,30 +3,55 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.lms.controller.BookController" spacing="10" style="-fx-padding: 15;">
+<SplitPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.lms.controller.BookController" orientation="VERTICAL" dividerPositions="0.7">
     
-    <Label text="Books" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+    <!-- Top: Table and Search -->
+    <VBox spacing="10" style="-fx-padding: 10;">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Search:" />
+            <TextField fx:id="searchField" promptText="Search Books..." prefWidth="250" />
+            <Button text="Search" onAction="#handleSearch" />
+            <Button text="Refresh" onAction="#handleRefresh" />
+        </HBox>
+        
+        <TableView fx:id="bookTable" VBox.vgrow="ALWAYS" styleClass="table-view">
+            <columns>
+                <TableColumn text="ID" prefWidth="50" />
+                <TableColumn text="Title" prefWidth="200" />
+                <TableColumn text="Author" prefWidth="150" />
+                <TableColumn text="Category" prefWidth="120" />
+                <TableColumn text="ISBN" prefWidth="120" />
+                <TableColumn text="Total" prefWidth="70" />
+                <TableColumn text="Available" prefWidth="70" />
+            </columns>
+        </TableView>
+    </VBox>
     
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Search:" />
-        <TextField fx:id="searchField" promptText="Title, Author, ISBN..." prefWidth="250" />
-        <Button text="Search" onAction="#handleSearch" />
-        <Button text="Refresh" onAction="#handleRefresh" />
-        <Region HBox.hgrow="ALWAYS" />
-        <Button text="Add Book" onAction="#handleAdd" />
-        <Button text="Edit Book" onAction="#handleEdit" />
-        <Button text="Delete Book" onAction="#handleDelete" />
-    </HBox>
+    <!-- Bottom: Inline Form -->
+    <VBox spacing="10" style="-fx-padding: 10; -fx-background-color: #E8E8E8;">
+        <Label text="Book Details (Select a row to edit or clear to add new)" style="-fx-font-weight: bold;"/>
+        <GridPane hgap="15" vgap="10">
+            <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="titleField" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="250"/>
+            
+            <Label text="Author:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <TextField fx:id="authorField" GridPane.columnIndex="3" GridPane.rowIndex="0" prefWidth="200"/>
+            
+            <Label text="Category:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="categoryField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            
+            <Label text="ISBN:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextField fx:id="isbnField" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            
+            <Label text="Total Copies:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="totalCopiesField" GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="80"/>
+        </GridPane>
+        
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0 0 0;">
+            <Button text="Save / Add" onAction="#handleSave" styleClass="button" defaultButton="true"/>
+            <Button text="Delete Selected" onAction="#handleDelete" styleClass="button"/>
+            <Button text="Clear Form" onAction="#clearForm" styleClass="button"/>
+        </HBox>
+    </VBox>
     
-    <TableView fx:id="bookTable" VBox.vgrow="ALWAYS" styleClass="table-view">
-        <columns>
-            <TableColumn text="ID" prefWidth="50" />
-            <TableColumn text="Title" prefWidth="250" />
-            <TableColumn text="Author" prefWidth="180" />
-            <TableColumn text="Category" prefWidth="120" />
-            <TableColumn text="ISBN" prefWidth="120" />
-            <TableColumn text="Total" prefWidth="70" />
-            <TableColumn text="Available" prefWidth="70" />
-        </columns>
-    </TableView>
-</VBox>
+</SplitPane>

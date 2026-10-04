@@ -8,25 +8,23 @@ import com.lms.service.MemberService;
 import com.lms.service.TransactionService;
 import com.lms.service.LibraryException;
 import com.lms.util.AlertHelper;
-import com.lms.util.ViewSwitcher;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.time.LocalDate;
 
 public class TransactionController {
     
-    // Issue Dialog Fields
+    // Issue Book Fields
     @FXML private ComboBox<String> memberComboBox;
     @FXML private ComboBox<String> bookComboBox;
     @FXML private DatePicker issueDatePicker;
     @FXML private DatePicker dueDatePicker;
 
-    // Return Dialog Fields
+    // Return Book Fields
     @FXML private TextField transactionIdField;
     @FXML private Label returnInfoLabel;
 
@@ -75,8 +73,12 @@ public class TransactionController {
 
             transactionService.issueBook(bookId, memberId, issueDate, dueDate);
             AlertHelper.showInfo("Success", "Book issued successfully!");
-            ViewSwitcher.setStatus("Book issued successfully.");
-            closeDialog(memberComboBox);
+            
+            // Refresh
+            loadMembersAndBooks();
+            memberComboBox.setValue(null);
+            bookComboBox.setValue(null);
+
         } catch (LibraryException e) {
             AlertHelper.showError("Issue Error", e.getMessage());
         } catch (Exception e) {
@@ -130,8 +132,11 @@ public class TransactionController {
             int txId = Integer.parseInt(idStr);
             transactionService.returnBook(txId, LocalDate.now());
             AlertHelper.showInfo("Success", "Book returned successfully!");
-            ViewSwitcher.setStatus("Book returned successfully.");
-            closeDialog(transactionIdField);
+            
+            transactionIdField.clear();
+            returnInfoLabel.setText("Transaction completed.");
+            loadMembersAndBooks(); // Refresh book inventory
+
         } catch (NumberFormatException e) {
             AlertHelper.showError("Validation Error", "Transaction ID must be a number.");
         } catch (LibraryException e) {
@@ -139,23 +144,6 @@ public class TransactionController {
         } catch (Exception e) {
             AlertHelper.showError("Error", "An unexpected error occurred.");
             e.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void handleCancelIssue() {
-        closeDialog(memberComboBox);
-    }
-    
-    @FXML
-    public void handleCancelReturn() {
-        closeDialog(transactionIdField);
-    }
-
-    private void closeDialog(javafx.scene.Node node) {
-        if (node != null && node.getScene() != null) {
-            Stage stage = (Stage) node.getScene().getWindow();
-            stage.close();
         }
     }
 }
