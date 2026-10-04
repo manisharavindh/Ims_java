@@ -2,41 +2,37 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.lms.controller.DashboardController">
-    <left>
-        <fx:include source="sidebar.fxml" />
-    </left>
-    <center>
-        <VBox spacing="20" style="-fx-padding: 30;">
-            <Label text="Dashboard" styleClass="page-title" />
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.lms.controller.DashboardController" spacing="20" style="-fx-padding: 20;">
+    
+    <Label text="Library Overview" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+    
+    <HBox spacing="40">
+        <GridPane hgap="20" vgap="10" styleClass="card">
+            <Label text="Total Books:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Label fx:id="totalBooksLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
             
-            <HBox spacing="20">
-                <!-- Total Books Card -->
-                <VBox styleClass="card" HBox.hgrow="ALWAYS">
-                    <Label text="Total Books" styleClass="card-title" />
-                    <Label fx:id="totalBooksLabel" text="0" styleClass="card-value" />
-                </VBox>
-                
-                <!-- Available Books Card -->
-                <VBox styleClass="card" HBox.hgrow="ALWAYS">
-                    <Label text="Available Books" styleClass="card-title" />
-                    <Label fx:id="availableBooksLabel" text="0" styleClass="card-value" />
-                </VBox>
-                
-                <!-- Issued Books Card -->
-                <VBox styleClass="card" HBox.hgrow="ALWAYS">
-                    <Label text="Issued Books" styleClass="card-title" />
-                    <Label fx:id="issuedBooksLabel" text="0" styleClass="card-value" />
-                </VBox>
-                
-                <!-- Total Members Card -->
-                <VBox styleClass="card" HBox.hgrow="ALWAYS">
-                    <Label text="Total Members" styleClass="card-title" />
-                    <Label fx:id="totalMembersLabel" text="0" styleClass="card-value" />
-                </VBox>
-            </HBox>
-        </VBox>
-    </center>
-</BorderPane>
+            <Label text="Available Books:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Label fx:id="availableBooksLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            
+            <Label text="Issued Books:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <Label fx:id="issuedBooksLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            
+            <Label text="Total Members:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <Label fx:id="totalMembersLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        </GridPane>
+    </HBox>
+    
+    <Label text="Recent Transactions" style="-fx-font-weight: bold;"/>
+    
+    <TableView fx:id="recentTable" VBox.vgrow="ALWAYS" styleClass="table-view">
+        <columns>
+            <TableColumn text="Tx ID" prefWidth="50" />
+            <TableColumn text="Book ID" prefWidth="60" />
+            <TableColumn text="Member ID" prefWidth="70" />
+            <TableColumn text="Issue Date" prefWidth="120" />
+            <TableColumn text="Due Date" prefWidth="120" />
+            <TableColumn text="Status" prefWidth="100" />
+        </columns>
+    </TableView>
+</VBox>

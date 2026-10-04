@@ -2,66 +2,31 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.lms.controller.BookController">
-    <left>
-        <fx:include source="sidebar.fxml" />
-    </left>
-    <center>
-        <VBox spacing="15" style="-fx-padding: 30;">
-            <Label text="Book Management" styleClass="page-title" />
-            
-            <HBox spacing="10">
-                <TextField fx:id="searchField" promptText="Search books..." prefWidth="250" styleClass="text-field" />
-                <Button text="Search" onAction="#handleSearch" styleClass="btn-secondary" />
-                <Region HBox.hgrow="ALWAYS" />
-                <Button text="Refresh" onAction="#handleRefresh" styleClass="btn-secondary" />
-            </HBox>
-            
-            <TableView fx:id="bookTable" VBox.vgrow="ALWAYS" styleClass="table-view">
-                <columns>
-                    <TableColumn text="ID" prefWidth="50">
-                        <cellValueFactory><PropertyValueFactory property="bookId" /></cellValueFactory>
-                    </TableColumn>
-                    <TableColumn text="Title" prefWidth="200">
-                        <cellValueFactory><PropertyValueFactory property="title" /></cellValueFactory>
-                    </TableColumn>
-                    <TableColumn text="Author" prefWidth="150">
-                        <cellValueFactory><PropertyValueFactory property="author" /></cellValueFactory>
-                    </TableColumn>
-                    <TableColumn text="Category" prefWidth="120">
-                        <cellValueFactory><PropertyValueFactory property="category" /></cellValueFactory>
-                    </TableColumn>
-                    <TableColumn text="ISBN" prefWidth="120">
-                        <cellValueFactory><PropertyValueFactory property="isbn" /></cellValueFactory>
-                    </TableColumn>
-                    <TableColumn text="Total" prefWidth="80">
-                        <cellValueFactory><PropertyValueFactory property="totalCopies" /></cellValueFactory>
-                    </TableColumn>
-                    <TableColumn text="Available" prefWidth="80">
-                        <cellValueFactory><PropertyValueFactory property="availableCopies" /></cellValueFactory>
-                    </TableColumn>
-                </columns>
-            </TableView>
-            
-            <!-- Add/Edit Form Area -->
-            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 5; -fx-border-color: #ced4da; -fx-border-radius: 5;">
-                <Label text="Add / Edit Book" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
-                <HBox spacing="10">
-                    <TextField fx:id="titleField" promptText="Title" HBox.hgrow="ALWAYS" />
-                    <TextField fx:id="authorField" promptText="Author" HBox.hgrow="ALWAYS" />
-                    <TextField fx:id="categoryField" promptText="Category" />
-                </HBox>
-                <HBox spacing="10">
-                    <TextField fx:id="isbnField" promptText="ISBN" />
-                    <TextField fx:id="totalCopiesField" promptText="Total Copies" />
-                    <Region HBox.hgrow="ALWAYS" />
-                    <Button text="Add" onAction="#handleAdd" styleClass="btn-primary" />
-                    <Button text="Edit" onAction="#handleEdit" styleClass="btn-secondary" />
-                    <Button text="Delete" onAction="#handleDelete" styleClass="btn-secondary" />
-                </HBox>
-            </VBox>
-        </VBox>
-    </center>
-</BorderPane>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.lms.controller.BookController" spacing="10" style="-fx-padding: 15;">
+    
+    <Label text="Books" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+    
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Search:" />
+        <TextField fx:id="searchField" promptText="Title, Author, ISBN..." prefWidth="250" />
+        <Button text="Search" onAction="#handleSearch" />
+        <Button text="Refresh" onAction="#handleRefresh" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="Add Book" onAction="#handleAdd" />
+        <Button text="Edit Book" onAction="#handleEdit" />
+        <Button text="Delete Book" onAction="#handleDelete" />
+    </HBox>
+    
+    <TableView fx:id="bookTable" VBox.vgrow="ALWAYS" styleClass="table-view">
+        <columns>
+            <TableColumn text="ID" prefWidth="50" />
+            <TableColumn text="Title" prefWidth="250" />
+            <TableColumn text="Author" prefWidth="180" />
+            <TableColumn text="Category" prefWidth="120" />
+            <TableColumn text="ISBN" prefWidth="120" />
+            <TableColumn text="Total" prefWidth="70" />
+            <TableColumn text="Available" prefWidth="70" />
+        </columns>
+    </TableView>
+</VBox>

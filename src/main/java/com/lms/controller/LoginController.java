@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 
 public class LoginController {
     
@@ -18,6 +19,21 @@ public class LoginController {
     private final AuthService authService = new AuthService();
 
     @FXML
+    public void initialize() {
+        // Pressing Enter logs in
+        passwordField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                handleLogin();
+            }
+        });
+        usernameField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                handleLogin();
+            }
+        });
+    }
+
+    @FXML
     public void handleLogin() {
         String user = usernameField.getText();
         String pass = passwordField.getText();
@@ -25,13 +41,12 @@ public class LoginController {
 
         try {
             authService.authenticate(user, pass);
-            // Authentication successful
-            Main.switchScene("/fxml/dashboard.fxml");
+            Main.switchScene("/fxml/main_layout.fxml", 1000, 700);
         } catch (LibraryException e) {
             errorLabel.setText(e.getMessage());
         } catch (Exception e) {
             errorLabel.setText("Database connection error.");
-            e.printStackTrace(); // Log error for dev
+            e.printStackTrace();
         }
     }
 }

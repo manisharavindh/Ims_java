@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.lms.controller.MainLayoutController">
+    <top>
+        <VBox>
+            <!-- MenuBar -->
+            <MenuBar styleClass="menu-bar">
+                <Menu text="File">
+                    <MenuItem text="Logout" onAction="#handleLogout"/>
+                    <SeparatorMenuItem />
+                    <MenuItem text="Exit" onAction="#handleExit"/>
+                </Menu>
+                <Menu text="Edit">
+                    <MenuItem text="Add Book..." onAction="#handleNewBook"/>
+                    <MenuItem text="Add Member..." onAction="#handleNewMember"/>
+                </Menu>
+                <Menu text="View">
+                    <MenuItem text="Dashboard" onAction="#showDashboard"/>
+                    <MenuItem text="Books" onAction="#showBooks"/>
+                    <MenuItem text="Members" onAction="#showMembers"/>
+                </Menu>
+                <Menu text="Library">
+                    <MenuItem text="Issue Book..." onAction="#handleIssueBook"/>
+                    <MenuItem text="Return Book..." onAction="#handleReturnBook"/>
+                </Menu>
+                <Menu text="Reports">
+                    <MenuItem text="All Reports" onAction="#showReports"/>
+                </Menu>
+                <Menu text="Help">
+                    <MenuItem text="About" onAction="#handleAbout"/>
+                </Menu>
+            </MenuBar>
+            
+            <!-- ToolBar -->
+            <ToolBar styleClass="tool-bar">
+                <Button text="New Book" onAction="#handleNewBook"/>
+                <Button text="New Member" onAction="#handleNewMember"/>
+                <Separator />
+                <Button text="Issue" onAction="#handleIssueBook"/>
+                <Button text="Return" onAction="#handleReturnBook"/>
+                <Separator />
+                <Button text="Dashboard" onAction="#showDashboard"/>
+                <Button text="Books" onAction="#showBooks"/>
+                <Button text="Members" onAction="#showMembers"/>
+                <Button text="Reports" onAction="#showReports"/>
+            </ToolBar>
+        </VBox>
+    </top>
+    
+    <center>
+        <!-- The active view will be injected here -->
+        <StackPane fx:id="centerPane" />
+    </center>
+    
+    <bottom>
+        <!-- Status Bar -->
+        <HBox styleClass="status-bar" alignment="CENTER_LEFT">
+            <Label fx:id="statusLabel" text="Ready" />
+        </HBox>
+    </bottom>
+</BorderPane>

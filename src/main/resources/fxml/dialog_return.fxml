@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.lms.controller.TransactionController" spacing="15" style="-fx-padding: 20; -fx-background-color: #E8E8E8;">
+    
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Transaction ID:" />
+        <TextField fx:id="transactionIdField" prefWidth="100" />
+        <Button text="Search" onAction="#handleSearchTransaction" />
+    </HBox>
+    
+    <VBox style="-fx-background-color: white; -fx-border-color: #A0A0A0; -fx-padding: 10;" prefHeight="100">
+        <Label fx:id="returnInfoLabel" text="Enter an ID and search..." wrapText="true" />
+    </VBox>
+    
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Return Book" onAction="#handleReturnBook" defaultButton="true" prefWidth="100" />
+        <Button text="Cancel" onAction="#handleCancelReturn" cancelButton="true" prefWidth="80" />
+    </HBox>
+    
+</VBox>

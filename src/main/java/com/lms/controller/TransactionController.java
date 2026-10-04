@@ -8,23 +8,25 @@ import com.lms.service.MemberService;
 import com.lms.service.TransactionService;
 import com.lms.service.LibraryException;
 import com.lms.util.AlertHelper;
+import com.lms.util.ViewSwitcher;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
 import java.time.LocalDate;
-import java.util.List;
 
 public class TransactionController {
     
-    // Issue Book Fields
+    // Issue Dialog Fields
     @FXML private ComboBox<String> memberComboBox;
     @FXML private ComboBox<String> bookComboBox;
     @FXML private DatePicker issueDatePicker;
     @FXML private DatePicker dueDatePicker;
 
-    // Return Book Fields
+    // Return Dialog Fields
     @FXML private TextField transactionIdField;
     @FXML private Label returnInfoLabel;
 
@@ -73,12 +75,8 @@ public class TransactionController {
 
             transactionService.issueBook(bookId, memberId, issueDate, dueDate);
             AlertHelper.showInfo("Success", "Book issued successfully!");
-            
-            // Refresh
-            loadMembersAndBooks();
-            memberComboBox.setValue(null);
-            bookComboBox.setValue(null);
-
+            ViewSwitcher.setStatus("Book issued successfully.");
+            closeDialog(memberComboBox);
         } catch (LibraryException e) {
             AlertHelper.showError("Issue Error", e.getMessage());
         } catch (Exception e) {
@@ -104,7 +102,6 @@ public class TransactionController {
 
             if (tx == null) {
                 returnInfoLabel.setText("Transaction not found.");
-                returnInfoLabel.setStyle("-fx-text-fill: red;");
             } else {
                 Book book = bookService.getBookById(tx.getBookId());
                 Member member = memberService.getMemberById(tx.getMemberId());
@@ -115,7 +112,6 @@ public class TransactionController {
                     String.format("Status: %s\nBook: %s\nMember: %s\nIssue Date: %s\nDue Date: %s",
                                   tx.getStatus(), bookTitle, memberName, tx.getIssueDate(), tx.getDueDate())
                 );
-                returnInfoLabel.setStyle("-fx-text-fill: black;");
             }
         } catch (NumberFormatException e) {
             AlertHelper.showError("Validation Error", "Transaction ID must be a number.");
@@ -126,7 +122,7 @@ public class TransactionController {
     public void handleReturnBook() {
         String idStr = transactionIdField.getText();
         if (idStr == null || idStr.trim().isEmpty()) {
-            AlertHelper.showError("Validation Error", "Please enter a Transaction ID and search first.");
+            AlertHelper.showError("Validation Error", "Please search for a transaction first.");
             return;
         }
 
@@ -134,10 +130,8 @@ public class TransactionController {
             int txId = Integer.parseInt(idStr);
             transactionService.returnBook(txId, LocalDate.now());
             AlertHelper.showInfo("Success", "Book returned successfully!");
-            
-            transactionIdField.clear();
-            returnInfoLabel.setText("Transaction completed.");
-
+            ViewSwitcher.setStatus("Book returned successfully.");
+            closeDialog(transactionIdField);
         } catch (NumberFormatException e) {
             AlertHelper.showError("Validation Error", "Transaction ID must be a number.");
         } catch (LibraryException e) {
@@ -145,6 +139,23 @@ public class TransactionController {
         } catch (Exception e) {
             AlertHelper.showError("Error", "An unexpected error occurred.");
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleCancelIssue() {
+        closeDialog(memberComboBox);
+    }
+    
+    @FXML
+    public void handleCancelReturn() {
+        closeDialog(transactionIdField);
+    }
+
+    private void closeDialog(javafx.scene.Node node) {
+        if (node != null && node.getScene() != null) {
+            Stage stage = (Stage) node.getScene().getWindow();
+            stage.close();
         }
     }
 }
