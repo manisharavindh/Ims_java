@@ -6,7 +6,7 @@
 <SplitPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.lms.controller.TransactionController" orientation="HORIZONTAL" dividerPositions="0.5">
     
     <!-- Left: Issue Book -->
-    <VBox spacing="15" style="-fx-padding: 20;">
+    <VBox spacing="15" style="-fx-padding: 15; -fx-background-color: #E8E8E8;">
         <Label text="Issue Book" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
         
         <GridPane hgap="10" vgap="15">
@@ -27,7 +27,7 @@
     </VBox>
     
     <!-- Right: Return Book -->
-    <VBox spacing="15" style="-fx-padding: 20; -fx-background-color: #E8E8E8;">
+    <VBox spacing="15" style="-fx-padding: 15; -fx-background-color: #E8E8E8;">
         <Label text="Return Book" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
         
         <HBox spacing="10" alignment="CENTER_LEFT">

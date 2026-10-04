@@ -5,32 +5,27 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.lms.controller.MainLayoutController">
     <top>
-        <MenuBar styleClass="menu-bar">
-            <Menu text="System">
-                <MenuItem text="Logout" onAction="#handleLogout"/>
-                <SeparatorMenuItem />
-                <MenuItem text="Exit" onAction="#handleExit"/>
-            </Menu>
-        </MenuBar>
+        <HBox alignment="BOTTOM_LEFT" spacing="4" style="-fx-background-color: #E8E8E8; -fx-padding: 10 15 0 15; -fx-border-color: #A0A0A0; -fx-border-width: 0 0 1 0;">
+            <Label text="LIBRARY MANAGEMENT SYSTEM" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 0 30 7 0;" />
+            
+            <Region HBox.hgrow="ALWAYS" />
+            
+            <fx:define>
+                <ToggleGroup fx:id="tabGroup"/>
+            </fx:define>
+            
+            <ToggleButton fx:id="dashBtn" text="Dashboard" styleClass="nav-tab" toggleGroup="$tabGroup" onAction="#showDashboard" />
+            <ToggleButton fx:id="booksBtn" text="Books" styleClass="nav-tab" toggleGroup="$tabGroup" onAction="#showBooks" />
+            <ToggleButton fx:id="membersBtn" text="Members" styleClass="nav-tab" toggleGroup="$tabGroup" onAction="#showMembers" />
+            <ToggleButton fx:id="transBtn" text="Transactions" styleClass="nav-tab" toggleGroup="$tabGroup" onAction="#showTransactions" />
+            <ToggleButton fx:id="reportsBtn" text="Reports" styleClass="nav-tab" toggleGroup="$tabGroup" onAction="#showReports" />
+            <ToggleButton fx:id="settingsBtn" text="Settings" styleClass="nav-tab" toggleGroup="$tabGroup" onAction="#showSettings" />
+        </HBox>
     </top>
     
     <center>
-        <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE" styleClass="main-tab-pane">
-            <Tab text="Dashboard">
-                <fx:include source="dashboard.fxml" />
-            </Tab>
-            <Tab text="Books">
-                <fx:include source="books.fxml" />
-            </Tab>
-            <Tab text="Members">
-                <fx:include source="members.fxml" />
-            </Tab>
-            <Tab text="Transactions">
-                <fx:include source="transactions.fxml" />
-            </Tab>
-            <Tab text="Reports">
-                <fx:include source="reports.fxml" />
-            </Tab>
-        </TabPane>
+        <StackPane style="-fx-background-color: #E8E8E8;">
+            <StackPane fx:id="centerPane" />
+        </StackPane>
     </center>
 </BorderPane>

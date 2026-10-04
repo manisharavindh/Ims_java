@@ -46,9 +46,16 @@ public class MemberController {
             }
         });
 
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            handleSearch();
+        });
+
         searchField.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                handleSearch();
+            if (event.getCode() == KeyCode.DOWN) {
+                memberTable.requestFocus();
+                if (memberTable.getSelectionModel().isEmpty() && !memberTable.getItems().isEmpty()) {
+                    memberTable.getSelectionModel().selectFirst();
+                }
             }
         });
 
@@ -63,6 +70,8 @@ public class MemberController {
         cols[2].setCellValueFactory(new PropertyValueFactory<>("email"));
         cols[3].setCellValueFactory(new PropertyValueFactory<>("phone"));
         cols[4].setCellValueFactory(new PropertyValueFactory<>("department"));
+        
+        com.lms.util.UIHelper.addSNoColumn(memberTable);
     }
 
     private void populateForm(Member member) {

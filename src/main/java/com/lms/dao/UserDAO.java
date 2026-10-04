@@ -30,4 +30,20 @@ public class UserDAO {
         }
         return null;
     }
+
+    public boolean updateUser(User user) {
+        String sql = "UPDATE users SET username = ?, password = ? WHERE user_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());
+            stmt.setInt(3, user.getUserId());
+            return stmt.executeUpdate() > 0;
+            
+        } catch (SQLException e) {
+            System.err.println("Error updating user: " + e.getMessage());
+            return false;
+        }
+    }
 }

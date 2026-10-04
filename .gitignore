@@ -43,3 +43,7 @@ Thumbs.db
 
 # Local configuration
 db.properties
+
+ps
+seed.sql
+generate_seed.py

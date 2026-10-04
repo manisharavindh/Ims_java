@@ -40,6 +40,8 @@ public class DashboardController {
         cols[3].setCellValueFactory(new PropertyValueFactory<>("issueDate"));
         cols[4].setCellValueFactory(new PropertyValueFactory<>("dueDate"));
         cols[5].setCellValueFactory(new PropertyValueFactory<>("status"));
+        
+        com.lms.util.UIHelper.addSNoColumn(recentTable);
     }
 
     private void loadStatistics() {

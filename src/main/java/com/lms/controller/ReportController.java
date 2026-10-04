@@ -74,6 +74,7 @@ public class ReportController {
 
     private void setupBookColumns() {
         reportTable.getColumns().clear();
+        com.lms.util.UIHelper.addSNoColumn(reportTable);
         reportTable.getColumns().add(createCol("ID", "bookId", 50));
         reportTable.getColumns().add(createCol("Title", "title", 200));
         reportTable.getColumns().add(createCol("Author", "author", 150));
@@ -85,6 +86,7 @@ public class ReportController {
 
     private void setupMemberColumns() {
         reportTable.getColumns().clear();
+        com.lms.util.UIHelper.addSNoColumn(reportTable);
         reportTable.getColumns().add(createCol("ID", "memberId", 50));
         reportTable.getColumns().add(createCol("Name", "name", 200));
         reportTable.getColumns().add(createCol("Email", "email", 200));
@@ -94,6 +96,7 @@ public class ReportController {
 
     private void setupTransactionColumns() {
         reportTable.getColumns().clear();
+        com.lms.util.UIHelper.addSNoColumn(reportTable);
         reportTable.getColumns().add(createCol("Tx ID", "transactionId", 50));
         reportTable.getColumns().add(createCol("Book ID", "bookId", 60));
         reportTable.getColumns().add(createCol("Member ID", "memberId", 70));

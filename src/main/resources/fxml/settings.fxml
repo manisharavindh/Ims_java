@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.lms.controller.SettingsController" spacing="30" style="-fx-padding: 20; -fx-alignment: top-left; -fx-background-color: #E8E8E8;">
+    
+    <VBox spacing="15" style="-fx-background-color: white; -fx-border-color: #A0A0A0; -fx-border-width: 1; -fx-padding: 25; -fx-max-width: 500;">
+        <Label text="Security Settings" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        <Label text="Update the master administrator credentials." style="-fx-text-fill: #666666;"/>
+        <Separator />
+        
+        <GridPane hgap="15" vgap="15">
+            <Label text="Current Username:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="currentUsernameField" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="250"/>
+            
+            <Label text="Current Password:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <PasswordField fx:id="currentPasswordField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            
+            <Label text="New Username:" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-padding: 10 0 0 0;"/>
+            <TextField fx:id="newUsernameField" GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-margin: 10 0 0 0;" />
+            
+            <Label text="New Password:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <PasswordField fx:id="newPasswordField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        </GridPane>
+        
+        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15 0 0 0;">
+            <Button text="Update Credentials" onAction="#handleUpdateCredentials" styleClass="button" defaultButton="true" prefWidth="150" />
+        </HBox>
+    </VBox>
+    
+    <VBox spacing="15" style="-fx-background-color: white; -fx-border-color: #A0A0A0; -fx-border-width: 1; -fx-padding: 25; -fx-max-width: 500;">
+        <Label text="System Actions" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        <Separator />
+        
+        <HBox spacing="20" alignment="CENTER_LEFT">
+            <Button text="Log Out" onAction="#handleLogout" styleClass="button" prefWidth="150" />
+            <Label text="Sign out of the current administrator session." style="-fx-text-fill: #666666;" />
+        </HBox>
+        
+        <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 10 0 0 0;">
+            <Button text="Exit Application" onAction="#handleExit" styleClass="button" prefWidth="150" />
+            <Label text="Completely close the Library Management System." style="-fx-text-fill: #666666;" />
+        </HBox>
+    </VBox>
+    
+</VBox>

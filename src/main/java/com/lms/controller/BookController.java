@@ -47,9 +47,16 @@ public class BookController {
             }
         });
 
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            handleSearch();
+        });
+
         searchField.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                handleSearch();
+            if (event.getCode() == KeyCode.DOWN) {
+                bookTable.requestFocus();
+                if (bookTable.getSelectionModel().isEmpty() && !bookTable.getItems().isEmpty()) {
+                    bookTable.getSelectionModel().selectFirst();
+                }
             }
         });
 
@@ -66,6 +73,8 @@ public class BookController {
         cols[4].setCellValueFactory(new PropertyValueFactory<>("isbn"));
         cols[5].setCellValueFactory(new PropertyValueFactory<>("totalCopies"));
         cols[6].setCellValueFactory(new PropertyValueFactory<>("availableCopies"));
+        
+        com.lms.util.UIHelper.addSNoColumn(bookTable);
     }
 
     private void populateForm(Book book) {

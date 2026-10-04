@@ -95,3 +95,37 @@
     -fx-border-radius: 3;
     -fx-padding: 15;
 }
+
+.nav-tab {
+    -fx-background-color: #D4D4D4;
+    -fx-border-color: #A0A0A0;
+    -fx-border-width: 1 1 0 1;
+    -fx-border-radius: 5 5 0 0;
+    -fx-background-radius: 5 5 0 0;
+    -fx-padding: 6 15;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-cursor: hand;
+    /* Create a trick to overlap the bottom border seamlessly */
+    -fx-translate-y: 1; 
+}
+
+.nav-tab:hover {
+    -fx-background-color: #E0E0E0;
+}
+
+.nav-tab:selected {
+    -fx-background-color: #E8E8E8;
+    -fx-border-color: #A0A0A0 #A0A0A0 #E8E8E8 #A0A0A0;
+}
+
+/* Remove default outer border on SplitPanes (Books, Members, Transactions) */
+.split-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.split-pane *.split-pane-divider {
+    -fx-background-color: #A0A0A0;
+    -fx-padding: 0 1 0 1;
+}

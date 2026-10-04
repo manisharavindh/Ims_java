@@ -30,4 +30,30 @@ public class AuthService {
             throw new LibraryException("Invalid username or password.");
         }
     }
+
+    public void updateCredentials(String currentUsername, String currentPassword, String newUsername, String newPassword) throws LibraryException {
+        // First verify current credentials
+        User user = authenticate(currentUsername, currentPassword);
+        
+        if (newUsername == null || newUsername.trim().isEmpty()) {
+            throw new LibraryException("New username cannot be empty.");
+        }
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            throw new LibraryException("New password cannot be empty.");
+        }
+        
+        // Check if new username is already taken by someone else
+        User existingUser = userDAO.findByUsername(newUsername);
+        if (existingUser != null && existingUser.getUserId() != user.getUserId()) {
+            throw new LibraryException("Username '" + newUsername + "' is already taken.");
+        }
+        
+        user.setUsername(newUsername);
+        user.setPassword(newPassword);
+        
+        boolean updated = userDAO.updateUser(user);
+        if (!updated) {
+            throw new LibraryException("Failed to update credentials in the database.");
+        }
+    }
 }
