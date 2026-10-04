@@ -1,38 +1,39 @@
 package com.lms;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-/**
- * Main entry point for the Library Management System.
- * This class launches the JavaFX application.
- */
+import java.io.IOException;
+
 public class Main extends Application {
+    private static Stage primaryStage;
 
     @Override
-    public void start(Stage primaryStage) {
-        // Simple welcome screen to verify JavaFX is working
-        Label titleLabel = new Label("Library Management System");
-        titleLabel.setFont(new Font("Arial", 28));
-
-        Label subtitleLabel = new Label("Welcome! The application is running.");
-        subtitleLabel.setFont(new Font("Arial", 16));
-
-        VBox root = new VBox(20, titleLabel, subtitleLabel);
-        root.setAlignment(Pos.CENTER);
-        root.setStyle("-fx-background-color: #2b2d42; -fx-padding: 40;");
-        titleLabel.setStyle("-fx-text-fill: #edf2f4;");
-        subtitleLabel.setStyle("-fx-text-fill: #8d99ae;");
-
-        Scene scene = new Scene(root, 900, 600);
+    public void start(Stage stage) {
+        primaryStage = stage;
         primaryStage.setTitle("Library Management System");
-        primaryStage.setScene(scene);
+        switchScene("/fxml/login.fxml");
         primaryStage.show();
+    }
+
+    public static void switchScene(String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxmlPath));
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 1000, 700);
+            
+            // Add global CSS
+            String css = Main.class.getResource("/css/style.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            
+            primaryStage.setScene(scene);
+        } catch (IOException e) {
+            System.err.println("Error loading FXML: " + fxmlPath);
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

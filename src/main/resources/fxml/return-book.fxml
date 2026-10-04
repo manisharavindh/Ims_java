@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.lms.controller.TransactionController">
+    <left>
+        <fx:include source="sidebar.fxml" />
+    </left>
+    <center>
+        <VBox spacing="20" style="-fx-padding: 30;" alignment="TOP_CENTER">
+            <Label text="Return Book" styleClass="page-title" />
+            
+            <VBox spacing="15" maxWidth="500" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                
+                <Label text="Enter Transaction ID:" style="-fx-font-weight: bold;" />
+                <HBox spacing="10">
+                    <TextField fx:id="transactionIdField" promptText="Transaction ID" HBox.hgrow="ALWAYS" styleClass="text-field" />
+                    <Button text="SEARCH" onAction="#handleSearchTransaction" styleClass="btn-secondary" />
+                </HBox>
+                
+                <VBox spacing="5" style="-fx-padding: 15; -fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-radius: 5;">
+                    <Label text="Transaction Details:" style="-fx-font-weight: bold;" />
+                    <Label fx:id="returnInfoLabel" text="No transaction selected." wrapText="true" />
+                </VBox>
+                
+                <Label fx:id="returnMessageLabel" />
+                
+                <Button text="RETURN BOOK" onAction="#handleReturnBook" styleClass="btn-primary" prefWidth="440" />
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

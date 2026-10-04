@@ -4,6 +4,8 @@ module com.lms {
     requires java.sql;
 
     opens com.lms to javafx.fxml;
+    opens com.lms.controller to javafx.fxml;
+    opens com.lms.model to javafx.base;
 
     exports com.lms;
 }

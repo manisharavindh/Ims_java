@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.lms.controller.TransactionController">
+    <left>
+        <fx:include source="sidebar.fxml" />
+    </left>
+    <center>
+        <VBox spacing="20" style="-fx-padding: 30;" alignment="TOP_CENTER">
+            <Label text="Issue Book" styleClass="page-title" />
+            
+            <VBox spacing="15" maxWidth="500" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                
+                <Label text="Select Member:" style="-fx-font-weight: bold;" />
+                <ComboBox fx:id="memberComboBox" promptText="Select a member" prefWidth="440" />
+                
+                <Label text="Select Book:" style="-fx-font-weight: bold;" />
+                <ComboBox fx:id="bookComboBox" promptText="Select a book" prefWidth="440" />
+                
+                <HBox spacing="20">
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label text="Issue Date:" style="-fx-font-weight: bold;" />
+                        <DatePicker fx:id="issueDatePicker" prefWidth="210" />
+                    </VBox>
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label text="Due Date:" style="-fx-font-weight: bold;" />
+                        <DatePicker fx:id="dueDatePicker" prefWidth="210" />
+                    </VBox>
+                </HBox>
+                
+                <Label fx:id="issueMessageLabel" />
+                
+                <Button text="ISSUE BOOK" onAction="#handleIssueBook" styleClass="btn-primary" prefWidth="440" />
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>
