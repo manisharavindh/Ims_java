@@ -11,10 +11,16 @@ import java.util.List;
 public class TransactionDAO {
 
     public void addTransaction(Transaction transaction) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            addTransaction(conn, transaction);
+        } catch (SQLException e) {
+            System.err.println("Error adding transaction: " + e.getMessage());
+        }
+    }
+
+    public void addTransaction(Connection conn, Transaction transaction) throws SQLException {
         String sql = "INSERT INTO transactions (book_id, member_id, issue_date, due_date, return_date, status) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            
+        try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, transaction.getBookId());
             stmt.setInt(2, transaction.getMemberId());
             stmt.setDate(3, Date.valueOf(transaction.getIssueDate()));
@@ -29,8 +35,6 @@ public class TransactionDAO {
                     transaction.setTransactionId(generatedKeys.getInt(1));
                 }
             }
-        } catch (SQLException e) {
-            System.err.println("Error adding transaction: " + e.getMessage());
         }
     }
 
@@ -68,10 +72,16 @@ public class TransactionDAO {
     }
 
     public void updateTransaction(Transaction transaction) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            updateTransaction(conn, transaction);
+        } catch (SQLException e) {
+            System.err.println("Error updating transaction: " + e.getMessage());
+        }
+    }
+
+    public void updateTransaction(Connection conn, Transaction transaction) throws SQLException {
         String sql = "UPDATE transactions SET book_id = ?, member_id = ?, issue_date = ?, due_date = ?, return_date = ?, status = ? WHERE transaction_id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, transaction.getBookId());
             stmt.setInt(2, transaction.getMemberId());
             stmt.setDate(3, Date.valueOf(transaction.getIssueDate()));
@@ -81,8 +91,6 @@ public class TransactionDAO {
             stmt.setInt(7, transaction.getTransactionId());
             
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error updating transaction: " + e.getMessage());
         }
     }
 

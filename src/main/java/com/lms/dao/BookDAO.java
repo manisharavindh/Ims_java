@@ -67,10 +67,16 @@ public class BookDAO {
     }
 
     public void updateBook(Book book) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            updateBook(conn, book);
+        } catch (SQLException e) {
+            System.err.println("Error updating book: " + e.getMessage());
+        }
+    }
+
+    public void updateBook(Connection conn, Book book) throws SQLException {
         String sql = "UPDATE books SET title = ?, author = ?, category = ?, isbn = ?, total_copies = ?, available_copies = ? WHERE book_id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, book.getTitle());
             stmt.setString(2, book.getAuthor());
             stmt.setString(3, book.getCategory());
@@ -78,10 +84,7 @@ public class BookDAO {
             stmt.setInt(5, book.getTotalCopies());
             stmt.setInt(6, book.getAvailableCopies());
             stmt.setInt(7, book.getBookId());
-            
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error updating book: " + e.getMessage());
         }
     }
 
