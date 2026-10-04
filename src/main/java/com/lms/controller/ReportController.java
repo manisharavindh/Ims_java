@@ -1,50 +1,107 @@
 package com.lms.controller;
 
+import com.lms.model.Book;
+import com.lms.model.Member;
 import com.lms.model.Transaction;
+import com.lms.service.BookService;
+import com.lms.service.MemberService;
+import com.lms.service.TransactionService;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReportController {
     
-    @FXML private TableView<Transaction> reportTable;
-    private ObservableList<Transaction> transactionList;
+    @FXML private TableView<Object> reportTable;
+
+    private final BookService bookService = new BookService();
+    private final MemberService memberService = new MemberService();
+    private final TransactionService transactionService = new TransactionService();
 
     @FXML
     public void initialize() {
-        // TEMPORARY PHASE 6 BEHAVIOR
-        transactionList = FXCollections.observableArrayList(
-            new Transaction(1, 1, 1, LocalDate.now().minusDays(5), LocalDate.now().plusDays(9), null, "ISSUED"),
-            new Transaction(2, 2, 2, LocalDate.now().minusDays(20), LocalDate.now().minusDays(6), LocalDate.now(), "RETURNED")
-        );
-        reportTable.setItems(transactionList);
+        showBorrowingHistory(); // Default view
     }
 
     @FXML
     public void showAllBooks() {
-        System.out.println("Generating All Books report...");
+        setupBookColumns();
+        reportTable.setItems(FXCollections.observableArrayList(bookService.getAllBooks()));
     }
 
     @FXML
     public void showAvailableBooks() {
-        System.out.println("Generating Available Books report...");
+        setupBookColumns();
+        List<Book> available = bookService.getAllBooks().stream()
+                .filter(b -> b.getAvailableCopies() > 0)
+                .collect(Collectors.toList());
+        reportTable.setItems(FXCollections.observableArrayList(available));
     }
 
     @FXML
     public void showIssuedBooks() {
-        System.out.println("Generating Issued Books report...");
+        setupTransactionColumns();
+        reportTable.setItems(FXCollections.observableArrayList(transactionService.getActiveTransactions()));
     }
 
     @FXML
     public void showOverdueBooks() {
-        System.out.println("Generating Overdue Books report...");
+        setupTransactionColumns();
+        reportTable.setItems(FXCollections.observableArrayList(transactionService.getOverdueTransactions()));
     }
 
     @FXML
     public void showAllMembers() {
-        System.out.println("Generating All Members report...");
+        setupMemberColumns();
+        reportTable.setItems(FXCollections.observableArrayList(memberService.getAllMembers()));
+    }
+
+    @FXML
+    public void showBorrowingHistory() {
+        setupTransactionColumns();
+        reportTable.setItems(FXCollections.observableArrayList(transactionService.getAllTransactions()));
+    }
+
+    private void setupBookColumns() {
+        reportTable.getColumns().clear();
+        reportTable.getColumns().add(createCol("ID", "bookId", 50));
+        reportTable.getColumns().add(createCol("Title", "title", 200));
+        reportTable.getColumns().add(createCol("Author", "author", 150));
+        reportTable.getColumns().add(createCol("Category", "category", 120));
+        reportTable.getColumns().add(createCol("ISBN", "isbn", 120));
+        reportTable.getColumns().add(createCol("Total", "totalCopies", 80));
+        reportTable.getColumns().add(createCol("Available", "availableCopies", 80));
+    }
+
+    private void setupMemberColumns() {
+        reportTable.getColumns().clear();
+        reportTable.getColumns().add(createCol("ID", "memberId", 50));
+        reportTable.getColumns().add(createCol("Name", "name", 200));
+        reportTable.getColumns().add(createCol("Email", "email", 200));
+        reportTable.getColumns().add(createCol("Phone", "phone", 150));
+        reportTable.getColumns().add(createCol("Department", "department", 150));
+    }
+
+    private void setupTransactionColumns() {
+        reportTable.getColumns().clear();
+        reportTable.getColumns().add(createCol("Tx ID", "transactionId", 50));
+        reportTable.getColumns().add(createCol("Book ID", "bookId", 60));
+        reportTable.getColumns().add(createCol("Member ID", "memberId", 70));
+        reportTable.getColumns().add(createCol("Issue Date", "issueDate", 120));
+        reportTable.getColumns().add(createCol("Due Date", "dueDate", 120));
+        reportTable.getColumns().add(createCol("Return Date", "returnDate", 120));
+        reportTable.getColumns().add(createCol("Status", "status", 100));
+    }
+
+    private TableColumn<Object, Object> createCol(String title, String property, int width) {
+        TableColumn<Object, Object> col = new TableColumn<>(title);
+        col.setCellValueFactory(new PropertyValueFactory<>(property));
+        col.setPrefWidth(width);
+        return col;
     }
 }

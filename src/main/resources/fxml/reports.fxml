@@ -21,31 +21,7 @@
             </HBox>
             
             <Label text="Borrowing History (Temporary View):" style="-fx-font-weight: bold;" />
-            <TableView fx:id="reportTable" VBox.vgrow="ALWAYS" styleClass="table-view">
-                <columns>
-                    <TableColumn text="Tx ID" prefWidth="50">
-                        <cellValueFactory><PropertyValueFactory property="transactionId" /></cellValueFactory>
-                    </TableColumn>
-                    <TableColumn text="Book ID" prefWidth="60">
-                        <cellValueFactory><PropertyValueFactory property="bookId" /></cellValueFactory>
-                    </TableColumn>
-                    <TableColumn text="Member ID" prefWidth="70">
-                        <cellValueFactory><PropertyValueFactory property="memberId" /></cellValueFactory>
-                    </TableColumn>
-                    <TableColumn text="Issue Date" prefWidth="120">
-                        <cellValueFactory><PropertyValueFactory property="issueDate" /></cellValueFactory>
-                    </TableColumn>
-                    <TableColumn text="Due Date" prefWidth="120">
-                        <cellValueFactory><PropertyValueFactory property="dueDate" /></cellValueFactory>
-                    </TableColumn>
-                    <TableColumn text="Return Date" prefWidth="120">
-                        <cellValueFactory><PropertyValueFactory property="returnDate" /></cellValueFactory>
-                    </TableColumn>
-                    <TableColumn text="Status" prefWidth="100">
-                        <cellValueFactory><PropertyValueFactory property="status" /></cellValueFactory>
-                    </TableColumn>
-                </columns>
-            </TableView>
+            <TableView fx:id="reportTable" VBox.vgrow="ALWAYS" styleClass="table-view" />
         </VBox>
     </center>
 </BorderPane>

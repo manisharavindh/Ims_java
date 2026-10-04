@@ -1,6 +1,9 @@
 package com.lms.controller;
 
 import com.lms.Main;
+import com.lms.service.AuthService;
+import com.lms.service.LibraryException;
+import com.lms.util.AlertHelper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -12,20 +15,23 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
 
+    private final AuthService authService = new AuthService();
+
     @FXML
     public void handleLogin() {
         String user = usernameField.getText();
         String pass = passwordField.getText();
+        errorLabel.setText("");
 
-        if (user == null || user.isEmpty() || pass == null || pass.isEmpty()) {
-            errorLabel.setText("Please enter username and password");
-            return;
+        try {
+            authService.authenticate(user, pass);
+            // Authentication successful
+            Main.switchScene("/fxml/dashboard.fxml");
+        } catch (LibraryException e) {
+            errorLabel.setText(e.getMessage());
+        } catch (Exception e) {
+            errorLabel.setText("Database connection error.");
+            e.printStackTrace(); // Log error for dev
         }
-
-        // TEMPORARY PHASE 6 BEHAVIOR:
-        // Automatically navigate to dashboard without database authentication.
-        // This will be replaced in Phase 7.
-        System.out.println("Temporary Login: Navigating to Dashboard...");
-        Main.switchScene("/fxml/dashboard.fxml");
     }
 }
